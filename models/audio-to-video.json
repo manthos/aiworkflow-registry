@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "title": "Audio-to-Video",
+  "fields": [
+    {
+      "id": "audiomedia",
+      "type": "fileUpload",
+      "label": "Audio Upload",
+      "maxSize": 10,
+      "required": true,
+      "helperText": "Upload an audio file",
+      "acceptedFileTypes": ["audio/*"]
+    },
+    {
+      "id": "imagemedia",
+      "type": "fileUpload",
+      "label": "Image Upload",
+      "maxSize": 1,
+      "required": true,
+      "helperText": "Upload an image background file",
+      "acceptedFileTypes": ["image/*"]
+    },
+    {
+      "id": "texfilemedia",
+      "type": "fileUpload",
+      "label": "Lyrics Upload",
+      "maxSize": 0.01,
+      "required": true,
+      "helperText": "Upload a lyrics/captions file",
+      "acceptedFileTypes": ["text/plain"]
+    },
+    {
+      "id": "font_color",
+      "type": "colorPicker",
+      "label": "Font color for caption",
+      "default": "#FFFFFF",
+      "required": true
+    },
+    {
+      "id": "bg_alpha",
+      "type": "inputSlider",
+      "label": "Background alpha",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5,
+      "required": true
+    }
+  ],
+  "formId": "audiovideo-processing-form",
+  "output": [
+    {
+      "id": "processedVideo",
+      "type": "video",
+      "format": "mp4",
+      "storage": {
+        "path": "/uploads/",
+        "type": "filesystem"
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "actions": {
+    "submit": {
+      "method": "POST",
+      "endpoint": "<YOUR_API_ENDPOINT>"
+    },
+    "stopaction": {
+      "command": "<STOP_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "testaction": {
+      "command": "<TEST_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "startaction": {
+      "command": "<START_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "statusaction": {
+      "command": "<STATUS_COMMAND_PLACEHOLDER>",
+      "resultvariable": "status"
+    }
+  },
+  "command": "python spectrum_video.py <audiomedia> --background_image=<imagemedia> --lyrics_file=<texfilemedia> --font_color='<font_color>' --background_alpha=<bg_alpha> <processedVideo> --debug",
+  "description": "Form for Audio-to-Video model",
+  "role_limits": {
+    "registered": [{"type": "media", "attribute": "duration", "value": 30}],
+    "basic": [{"type": "media", "attribute": "duration", "value": 120}],
+    "premium": [{"type": "media", "attribute": "duration", "value": 210}],
+    "pro": [{"type": "media", "attribute": "duration", "value": 300}]
+  },
+  "allowed_roles": ["registered", "basic", "premium", "pro"],
+  "main_input_id": "audiomedia"
+}
+

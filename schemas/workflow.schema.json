@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/YourUsername/AIWorkflowRegistry/schemas/workflow.schema.json",
+  "title": "AI Workflow JSON Schema",
+  "type": "object",
+  "required": ["type", "title", "fields", "output", "actions", "command", "description", "allowed_roles", "main_input_id"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["object"]
+    },
+    "title": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "label", "required"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "label": { "type": "string" },
+          "required": { "type": "boolean" },
+          "default": {},
+          "helperText": { "type": "string" },
+          "acceptedFileTypes": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "step": { "type": "number" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "formId": { "type": "string" },
+    "output": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string" },
+          "format": { "type": "string" },
+          "storage": {
+            "type": "object",
+            "properties": {
+              "path": { "type": "string" },
+              "type": { "type": "string" }
+            },
+            "required": ["path", "type"]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "command": { "type": "string" },
+          "method": { "type": "string" },
+          "endpoint": { "type": "string" },
+          "resultvariable": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "command": { "type": "string" },
+    "description": { "type": "string" },
+    "role_limits": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["type", "attribute", "value"],
+          "properties": {
+            "type": { "type": "string" },
+            "attribute": { "type": "string" },
+            "value": { "type": "number" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "allowed_roles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "main_input_id": { "type": "string" }
+  },
+  "additionalProperties": true
+}
+

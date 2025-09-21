@@ -1,0 +1,13 @@
+Setup
+
+Install the required Python package:
+
+pip install jsonschema
+
+
+Run the validator:
+
+python scripts/validate_json.py
+
+
+This ensures all contributions meet the schema before merging PRs.

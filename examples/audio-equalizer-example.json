@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "title": "Audio Equalizer (Example)",
+  "main_input_id": "media",
+  "fields": [
+    {
+      "id": "media",
+      "type": "fileUpload",
+      "label": "Media Upload",
+      "maxSize": 10,
+      "required": true,
+      "helperText": "Upload an audio file",
+      "acceptedFileTypes": ["audio/*"]
+    },
+    {
+      "id": "khz0",
+      "type": "number",
+      "label": "0 Khz (dB)",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "required": true
+    },
+    {
+      "id": "khz250",
+      "type": "number",
+      "label": "250 Khz (dB)",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "required": true
+    },
+    {
+      "id": "khz1000",
+      "type": "number",
+      "label": "1000 Khz (dB)",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "required": true
+    },
+    {
+      "id": "khz4000",
+      "type": "number",
+      "label": "4000 Khz (dB)",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "required": true
+    },
+    {
+      "id": "khz16000",
+      "type": "number",
+      "label": "16000 Khz (dB)",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "required": true
+    }
+  ],
+  "formId": "audio-processing-form",
+  "output": [
+    {
+      "id": "processedMedia",
+      "type": "audio",
+      "format": "mp3",
+      "storage": {
+        "path": "/uploads/",
+        "type": "filesystem"
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "actions": {
+    "submit": {
+      "method": "POST",
+      "endpoint": "<YOUR_API_ENDPOINT>"
+    },
+    "stopaction": {
+      "command": "<STOP_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "testaction": {
+      "command": "<TEST_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "startaction": {
+      "command": "<START_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "statusaction": {
+      "command": "<STATUS_COMMAND_PLACEHOLDER>",
+      "resultvariable": "virtualmachines:status"
+    }
+  },
+  "command": "ffmpeg -y -i <media> -af \"firequalizer=gain_entry='entry(0,<khz0>);entry(250,<khz250>);entry(1000,<khz1000>);entry(4000,<khz4000>);entry(16000,<khz16000>)'\" <processedMedia>",
+  "description": "Example: Audio equalizer workflow. Demonstrates mapping CLI parameters to JSON fields (fields -> CLI args, output -> files). Replace endpoints/placeholders before using in production.",
+  "role_limits": {
+    "registered": [
+      { "type": "media", "attribute": "duration", "value": 30 }
+    ],
+    "basic": [
+      { "type": "media", "attribute": "duration", "value": 120 }
+    ],
+    "premium": [
+      { "type": "media", "attribute": "duration", "value": 210 }
+    ],
+    "pro": [
+      { "type": "media", "attribute": "duration", "value": 300 }
+    ]
+  },
+  "allowed_roles": ["registered", "basic", "premium", "pro"]
+}
+

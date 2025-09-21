@@ -1,0 +1,138 @@
+{
+  "type": "object",
+  "title": "Image-to-Image (Convert Command line Example)",
+  "main_input_id": "media",
+  "fields": [
+    {
+      "id": "media",
+      "type": "fileUpload",
+      "label": "Media Upload",
+      "maxSize": 10,
+      "required": true,
+      "helperText": "Upload an image file",
+      "acceptedFileTypes": ["image/*"]
+    },
+    {
+      "id": "negate",
+      "type": "number",
+      "label": "Negate (0-100%)",
+      "min": 0,
+      "max": 100,
+      "default": 15,
+      "required": true,
+      "helperText": "Set negate percentage between 0 and 100."
+    },
+    {
+      "id": "areaThreshold",
+      "type": "number",
+      "label": "Area Threshold (0-100)",
+      "min": 0,
+      "max": 100,
+      "default": 70,
+      "required": true,
+      "helperText": "Set the area threshold between 0 and 100."
+    },
+    {
+      "id": "connectedComponents",
+      "type": "select",
+      "label": "Connected Components",
+      "default": 4,
+      "options": [
+        { "label": "0", "value": 0 },
+        { "label": "4", "value": 4 },
+        { "label": "8", "value": 8 }
+      ],
+      "required": true,
+      "helperText": "Choose 0, 4, or 8 connected components."
+    },
+    {
+      "id": "alpha",
+      "type": "select",
+      "label": "Alpha",
+      "default": "off",
+      "options": [
+        { "label": "Activate", "value": "activate" },
+        { "label": "Associate", "value": "associate" },
+        { "label": "Background", "value": "background" },
+        { "label": "Copy", "value": "copy" },
+        { "label": "Deactivate", "value": "deactivate" },
+        { "label": "Disassociate", "value": "disassociate" },
+        { "label": "Extract", "value": "extract" },
+        { "label": "Off", "value": "off" },
+        { "label": "Off-if-opaque", "value": "off-if-opaque" },
+        { "label": "On", "value": "on" },
+        { "label": "Opaque", "value": "opaque" },
+        { "label": "Remove", "value": "remove" },
+        { "label": "Set", "value": "set" },
+        { "label": "Shape", "value": "shape" },
+        { "label": "Transparent", "value": "transparent" }
+      ],
+      "required": true,
+      "helperText": "Choose an alpha value."
+    }
+  ],
+  "formId": "convert-processing-form",
+  "output": [
+    {
+      "id": "processedImage",
+      "type": "image",
+      "label": "Processed Image",
+      "format": "png",
+      "storage": {
+        "path": "/uploads/",
+        "type": "filesystem"
+      }
+    },
+    {
+      "id": "processedImageMask",
+      "type": "image",
+      "label": "Processed Image Mask",
+      "format": "png",
+      "storage": {
+        "path": "/uploads/",
+        "type": "filesystem"
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "actions": {
+    "submit": {
+      "method": "POST",
+      "endpoint": "<YOUR_API_ENDPOINT>"
+    },
+    "stopaction": {
+      "command": "<STOP_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "testaction": {
+      "command": "<TEST_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "startaction": {
+      "command": "<START_COMMAND_PLACEHOLDER>",
+      "resultvariable": "success"
+    },
+    "statusaction": {
+      "command": "<STATUS_COMMAND_PLACEHOLDER>",
+      "resultvariable": "virtualmachines:status"
+    }
+  },
+  "command": "convert <media> ( -clone 0 -negate -threshold <negate>% -type bilevel +write <processedImageMask> -define connected-components:area-threshold=<areaThreshold> -define connected-components:mean-color=true -connected-components <connectedComponents> +write <processedImageMask> ) -alpha <alpha> -compose copy_opacity -composite <processedImage>",
+  "description": "Example: Form for an Image-to-Image command-line workflow. This example demonstrates how to map a CLI command and its parameters into the JSON structure (fields -> CLI args, outputs -> files). Replace endpoints and placeholders before using in production.",
+  "role_limits": {
+    "pro": [
+      { "type": "media", "attribute": "resolution", "value": 3840 }
+    ],
+    "basic": [
+      { "type": "media", "attribute": "resolution", "value": 800 }
+    ],
+    "premium": [
+      { "type": "media", "attribute": "resolution", "value": 1024 }
+    ],
+    "registered": [
+      { "type": "media", "attribute": "resolution", "value": 512 }
+    ]
+  },
+  "allowed_roles": ["registered", "basic", "premium", "pro"]
+}
+
